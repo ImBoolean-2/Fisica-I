@@ -53,6 +53,7 @@ Este proyecto simula el frenado de un automóvil utilizando sqlite y Tkinter. La
 +-------------------+       +-------------------+       |   Datos           |
                                                         |                   |
                                                         +-------------------+
+```
 
 ## Explicación de Archivos
 
