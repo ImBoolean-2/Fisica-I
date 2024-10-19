@@ -1,10 +1,10 @@
 # Simulación de Frenado
 
-![Simulación de Frenado](https://example.com/simulation_image.png)
+![Simulación de Frenado](https://th.bing.com/th/id/OIP.84RHToHT3PI0uQF-8Wkl8gHaC9?rs=1&pid=ImgDetMain)
 
 ## Descripción
 
-Este proyecto simula el frenado de un automóvil utilizando Pygame y Tkinter. La simulación gráfica muestra cómo un automóvil desacelera hasta detenerse, y los resultados se almacenan en una base de datos SQLite.
+Este proyecto simula el frenado de un automóvil utilizando sqlite y Tkinter. La simulación gráfica muestra cómo un automóvil desacelera hasta detenerse, y los resultados se almacenan en una base de datos SQLite.
 
 ## Estructura del Proyecto
 
@@ -15,7 +15,44 @@ Este proyecto simula el frenado de un automóvil utilizando Pygame y Tkinter. La
 3. **Almacenamiento**: Los resultados de la simulación se almacenan en una base de datos SQLite.
 4. **Visualización**: La simulación gráfica se muestra utilizando Pygame y Tkinter.
 
-![Flujo de Datos](https://example.com/data_flow_diagram.png)
+# Flujo de Datos de la Simulación de Frenado
+
+```plaintext
++-------------------+       +-------------------+       +-------------------+
+|                   |       |                   |       |                   |
+|   Interfaz de     |       |   Clase Automovil |       |   Clase Simulador |
+|   Usuario (GUI)   |       |                   |       |                   |
+|                   |       |                   |       |                   |
++-------------------+       +-------------------+       +-------------------+
+          |                           |                           |
+          |                           |                           |
+          v                           v                           v
++-------------------+       +-------------------+       +-------------------+
+|                   |       |                   |       |                   |
+|   Entrada de      |       |   Inicialización  |       |   Ejecución de    |
+|   Parámetros      |------>|   del Automovil   |------>|   la Simulación   |
+|                   |       |                   |       |                   |
++-------------------+       +-------------------+       +-------------------+
+          |                           |                           |
+          |                           |                           |
+          v                           v                           v
++-------------------+       +-------------------+       +-------------------+
+|                   |       |                   |       |                   |
+|   Cálculo de      |       |   Movimiento del  |       |   Cálculo de la   |
+|   Desaceleración  |<------|   Automovil       |<------|   Distancia de    |
+|                   |       |                   |       |   Frenado         |
++-------------------+       +-------------------+       +-------------------+
+          |                           |                           |
+          |                           |                           |
+          v                           v                           v
++-------------------+       +-------------------+       +-------------------+
+|                   |       |                   |       |                   |
+|   Actualización   |       |   Dibujo del      |       |   Almacenamiento  |
+|   de la GUI       |<------|   Automovil en el |<------|   de Resultados   |
+|                   |       |   Canvas          |       |   en la Base de   |
++-------------------+       +-------------------+       |   Datos           |
+                                                        |                   |
+                                                        +-------------------+
 
 ## Explicación de Archivos
 
