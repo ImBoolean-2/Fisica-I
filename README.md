@@ -29,7 +29,8 @@ Este proyecto simula el frenado de un automóvil utilizando Pygame y Tkinter. La
 Para instalar las dependencias del proyecto, ejecuta:
 
 ```sh
-pip install -r requirements.txt
+pip install -r requirements.txt sh
+```
 
 ## Hecho por
 
