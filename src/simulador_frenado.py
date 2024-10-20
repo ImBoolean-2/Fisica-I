@@ -1,17 +1,15 @@
-import tkinter as tk
-
-ANCHO_VENTANA = 800
-ALTO_VENTANA = 600
-COLOR_FONDO = "white"
-COLOR_AUTO = "blue"
-
 class Automovil:
-    def __init__(self, velocidad_inicial, desaceleracion):
+    def __init__(self, velocidad_inicial, desaceleracion, coeficiente_friccion, resistencia_aire, peso, gravedad=9.8, abs=False):
         self.velocidad_inicial = velocidad_inicial
         self.velocidad_actual = velocidad_inicial
         self.desaceleracion = desaceleracion
+        self.coeficiente_friccion = coeficiente_friccion
+        self.resistencia_aire = resistencia_aire
+        self.peso = peso
+        self.gravedad = gravedad
+        self.abs = abs
         self.x = 50  
-        self.y = ALTO_VENTANA // 2 - 25 
+        self.y = 300
         self.ancho = 50
         self.alto = 25
 
@@ -22,36 +20,41 @@ class Automovil:
                 self.velocidad_actual = 0
         self.x += self.velocidad_actual * tiempo_transcurrido
 
+    def calcular_desaceleracion_total(self):
+        g = self.gravedad
+        peso = self.peso
+        fuerza_friccion = self.coeficiente_friccion * peso * g
+        desaceleracion_friccion = fuerza_friccion / peso
+        desaceleracion_total = desaceleracion_friccion + self.resistencia_aire
+        if self.abs:
+            desaceleracion_total *= 1.231  # 23.1% más eficiente
+        return desaceleracion_total
+
     def calcular_distancia_frenado(self):
-        return (self.velocidad_inicial ** 2) / (2 * self.desaceleracion)
+        a = self.calcular_desaceleracion_total()
+        if a <= 0:
+            return float('inf')
+        return (self.velocidad_inicial ** 2) / (2 * a)
 
-class SimulacionGrafica:
-    def __init__(self, root, velocidad_inicial, desaceleracion):
-        self.root = root
-        self.canvas = tk.Canvas(root, width=ANCHO_VENTANA, height=ALTO_VENTANA, bg=COLOR_FONDO)
-        self.canvas.pack()
+    def calcular_tiempo_frenado(self):
+        a = self.calcular_desaceleracion_total()
+        if a <= 0:
+            return float('inf')
+        return self.velocidad_inicial / a
 
-        # Título
-        self.titulo = tk.Label(root, text="Simulación de Frenado", font=("Helvetica", 16))
-        self.titulo.pack(pady=10)
+# Valores extraídos del texto
+velocidad_inicial = 50
+desaceleracion = 5
+coeficiente_friccion = 0.5
+resistencia_aire = 0.2
+peso = 1000
+gravedad = 9.8
+abs = False
 
-        # Información
-        self.info = tk.Label(root, text=f"Velocidad Inicial: {velocidad_inicial} km/h, Desaceleración: {desaceleracion} m/s²", font=("Helvetica", 12))
-        self.info.pack(pady=10)
+# Crear objeto Automovil
+auto = Automovil(velocidad_inicial, desaceleracion, coeficiente_friccion, resistencia_aire, peso, gravedad, abs)
 
-        self.auto = Automovil(velocidad_inicial, desaceleracion)
-        self.rect = self.canvas.create_rectangle(self.auto.x, self.auto.y, self.auto.x + self.auto.ancho, self.auto.y + self.auto.alto, fill=COLOR_AUTO)
-        self.actualizar()
+# Calcular distancia de frenado
+distancia_frenado = auto.calcular_distancia_frenado()
 
-    def actualizar(self):
-        tiempo_transcurrido = 1 / 60  # Aproximadamente 60 FPS
-        self.auto.mover(tiempo_transcurrido)
-        self.canvas.coords(self.rect, self.auto.x, self.auto.y, self.auto.x + self.auto.ancho, self.auto.y + self.auto.alto)
-        if self.auto.velocidad_actual > 0:
-            self.root.after(16, self.actualizar)  # Llamar a actualizar de nuevo después de 16 ms (~60 FPS)
-
-def iniciar_simulacion_grafica(velocidad_inicial, desaceleracion):
-    root = tk.Tk()
-    root.title("Simulación de Frenado")
-    simulacion = SimulacionGrafica(root, velocidad_inicial, desaceleracion)
-    root.mainloop()
+print("La distancia de frenado es:", distancia_frenado)
